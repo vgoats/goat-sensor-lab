@@ -12,10 +12,10 @@ species- and farm-specific evidence needed before any production alert is truste
 > This is a research data-collection system. It does not diagnose disease, confirm pregnancy,
 > or replace veterinary examination.
 
-## Plain-English overview
+## Project overview
 
-The easiest way to understand Goat Sensor Lab is: **this repository builds the laboratory and
-measuring instrument, not the final scientific result**.
+Goat Sensor Lab **builds the laboratory and measuring instrument, not the final scientific
+result**.
 
 It is similar to making a research Fitbit for goats and sheep. A movement sensor records how an
 animal moves, an observer or synchronized video supplies trustworthy behavior labels, and the
@@ -54,10 +54,9 @@ animals and farms that were not used during training.
 
 ### What model does this project train?
 
-The baseline is a **Random Forest**. In ordinary language, it is a committee of many small
-decision trees. Each tree asks simple questions about the movement window—for example, how strong,
-variable, or jerky the acceleration and rotation were—and votes on a label. The combined vote is
-the model's prediction.
+The baseline is a **Random Forest**: a committee of decision trees. Each tree evaluates rules over
+the movement window—for example, how strong, variable, or jerky the acceleration and rotation
+were—and votes on a label. The combined vote is the model's prediction.
 
 The training code supports three separate research heads:
 

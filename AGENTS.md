@@ -17,6 +17,13 @@ reference source now; XIAO nRF52840 Sense BLE becomes another adapter, not a sec
 - Report animal-independent validation separately from random row/window splits.
 - Never claim the prototype diagnoses disease, pregnancy, or estrus. It produces research signals.
 
+## Documentation tone rule
+
+- Use neutral, professional headings that name the subject directly.
+- Never characterize readers by presumed technical ability, sophistication, or intelligence.
+- Present the material directly; do not describe how its complexity was adjusted for the audience.
+- Make explanations precise and well structured without compromising technical accuracy.
+
 ## Verification
 
 - Android: `./gradlew testDebugUnitTest assembleDebug`
