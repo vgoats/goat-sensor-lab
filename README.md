@@ -195,6 +195,7 @@ Start at the [wiki index](wiki/README.md). Key references:
 - [Canonical schemas](schema/README.md)
 - [Ethogram](wiki/experiments/ethogram.md)
 - [Pilot protocol](wiki/experiments/pilot-protocol.md)
+- [Annotation tooling and responsibility boundary](wiki/experiments/annotation-tooling.md)
 - [Evidence matrix](wiki/research/evidence-matrix.md)
 - [Literature search method](wiki/research/literature-search-method.md)
 - [Open-source reference index](references/README.md)
@@ -207,8 +208,9 @@ Start at the [wiki index](wiki/README.md). Key references:
 Included: indoor feeding, rumination, lying, standing, movement, individual baseline deviations,
 estrus/parturition research labels, and early welfare-risk signals.
 
-Excluded: GPS grazing, virtual fencing, aversive actuation, or claiming a wearable alone proves a
-medical/reproductive state.
+Excluded: fixed-camera identity and tracking (owned by
+[Herdlink](https://github.com/vgoats/herdlink)), GPS grazing, virtual fencing, aversive actuation,
+or claiming a wearable alone proves a medical/reproductive state.
 
 ## License
 

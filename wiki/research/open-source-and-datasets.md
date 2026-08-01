@@ -17,6 +17,12 @@
 | [CABRA paper](https://doi.org/10.3390/agriengineering8080301) and [IMUcabra repository](https://github.com/knklB/IMUcabra) | Open goat collar, ESP-NOW telemetry, video synchronization and embedded inference | Pasture/GPS transfer-only; animal-held-out macro-F1 0.31 is a warning about placement/domain shift, not indoor validation |
 | [BORIS](https://github.com/olivierfriard/BORIS) and [methods paper](https://doi.org/10.1111/2041-210X.12584) | Independent video/audio event annotation | GPL tool/method reference; still require blinded raters, agreement, immutable tracks, and consensus provenance |
 
+The annotation tools have distinct roles. Goat Sensor Lab uses BORIS as the default reference for
+manual sensor-study behavior intervals. The Observer XT is retained only to describe and reproduce
+the Mauny study method. CVAT and DeepLabCut labeling address camera tracks, spatial regions, or pose
+keypoints and therefore fall under Herdlink when used for fixed-camera identity research. See
+[Annotation tooling and responsibility boundary](../experiments/annotation-tooling.md).
+
 ## Engineering libraries
 
 | Project | Intended use | License/status note |

@@ -1,5 +1,9 @@
 # Video Synchronization and Annotation
 
+The complete tool decision, the exact Mauny/ACT4Behav human-labeling workflow, and the boundary
+between Goat Sensor Lab and Herdlink are documented in
+[Annotation tooling and responsibility boundary](annotation-tooling.md).
+
 ## Camera layout
 
 Use at least one overhead camera covering posture and movement and one feeder-side camera showing muzzle/jaw/feed interaction. Keep clocks, camera IDs, pen layout, frame rate, resolution, and dropped-frame behavior in session metadata. Avoid relying on painted identifiers as the sole identity method after washing or prolonged housing; use a visible durable study marker plus RFID/session records.
@@ -26,7 +30,7 @@ BLE notification arrival time is not the XIAO sample time. Use board sequence nu
   versioned clock mapping, ethogram/tool versions, confidence, visibility, and revisions.
 - Keep source video and annotation projects immutable and bind them by digest in the experiment
   manifest. Bind the versioned sensor-to-media clock-mapping artifact by URI and SHA-256 as well.
-  BORIS is an open-source option for event logging and media coding
+  BORIS is the default open-source reference for Goat Sensor Lab event logging and media coding
   ([project](https://github.com/olivierfriard/BORIS),
   [methods paper](https://doi.org/10.1111/2041-210X.12584)); record the exact version used.
 - Register a minimum double-annotation fraction (at least 20% for the pilot) and keep raters blinded

@@ -25,6 +25,7 @@ flowchart LR
 | XIAO nRF52840 Sense | Captures raw 3-axis acceleration and 3-axis angular velocity at the actual ear/neck mount | Final research source; requires firmware, battery, enclosure, and BLE integration |
 | Android recorder | Selects the source, stores canonical frames, records label-change events, and exports a session | Supervised research tool, not yet a production background service |
 | Video and annotators | Establish time-aligned ground truth | Labels require a written ethogram and agreement checks |
+| Herdlink | Owns fixed-camera pose, tracks, RFID-backed permanent identity, and identity-qualified shed events | Separate repository; Goat Sensor Lab must not create a competing camera-identity implementation |
 | Analysis pipeline | Validates schema, segments windows, extracts features or trains sequence models, and evaluates by animal | No random row/window split across the same animals |
 | Goat OS integration | Later consumes validated summaries and alerts | Outside this repository until contracts and model claims stabilize |
 

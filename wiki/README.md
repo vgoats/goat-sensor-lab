@@ -24,6 +24,7 @@ No current product is independently validated across every requested outcome for
 - [Ethogram](experiments/ethogram.md)
 - [Pilot protocol](experiments/pilot-protocol.md)
 - [Video synchronization and annotation](experiments/video-sync-and-annotation.md)
+- [Annotation tooling and responsibility boundary](experiments/annotation-tooling.md)
 
 ## Research
 
