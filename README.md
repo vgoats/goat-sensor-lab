@@ -12,6 +12,84 @@ species- and farm-specific evidence needed before any production alert is truste
 > This is a research data-collection system. It does not diagnose disease, confirm pregnancy,
 > or replace veterinary examination.
 
+## Plain-English overview
+
+The easiest way to understand Goat Sensor Lab is: **this repository builds the laboratory and
+measuring instrument, not the final scientific result**.
+
+It is similar to making a research Fitbit for goats and sheep. A movement sensor records how an
+animal moves, an observer or synchronized video supplies trustworthy behavior labels, and the
+analysis tools look for movement patterns associated with those labels. The project provides the
+recorder, data format, small-sensor Bluetooth path, quality checks, experiment instructions, and
+model-training machinery needed to do that carefully.
+
+It does **not** currently contain a model that can reliably look at an arbitrary goat and announce
+what it is doing or whether it is unwell. Creating that model requires a properly approved study,
+real recordings from many animals, synchronized video, independent observers, and validation on
+animals and farms that were not used during training.
+
+### What happens in a study
+
+1. A researcher identifies the animal, sensor placement, shed or pen, observer, cameras, and
+   sampling rate in the Android app.
+2. The phone IMU can be used for desk and engineering tests. The intended wearable uses a XIAO
+   nRF52840 Sense board on a safe collar or harness.
+3. The app records acceleration, rotation, timestamps, packet sequence, sensor identity, and
+   session configuration.
+4. During live observation, the researcher can independently mark feeding/rumination,
+   posture/activity, and a conservative welfare observation. These live buttons are field notes,
+   not automatically accepted scientific truth.
+5. The app stops and exports a ZIP containing `samples.csv`, `events.csv`, and `session.json`.
+   Interrupted or internally inconsistent sessions are repaired only to a proven valid prefix,
+   quarantined, or blocked from export.
+6. For research use, synchronized video is labelled independently by multiple observers. Their
+   agreement, disagreements, revisions, exclusions, and adjudication are recorded in immutable
+   annotation and consensus files.
+7. The analysis package verifies the exact files and their hashes, joins the approved labels to
+   the correct sensor times, removes unreliable intervals, and converts short motion windows into
+   numerical features.
+8. Baseline models are evaluated by holding out entire animals or sessions. This checks whether a
+   model generalizes beyond the individual recordings it learned from instead of rewarding it for
+   memorizing nearly identical sensor rows.
+
+### What model does this project train?
+
+The baseline is a **Random Forest**. In ordinary language, it is a committee of many small
+decision trees. Each tree asks simple questions about the movement window—for example, how strong,
+variable, or jerky the acceleration and rotation were—and votes on a label. The combined vote is
+the model's prediction.
+
+The training code supports three separate research heads:
+
+- **Ingestive behavior:** feeding, rumination, or neither.
+- **Posture and activity:** lying, standing, or active movement.
+- **Welfare-risk screening:** normal versus a possible abnormal-inactivity observation that needs
+  human review.
+
+The repository deliberately ships **no pretrained animal model**. Synthetic data is used to test
+the software, not to claim animal accuracy. The welfare output is never a diagnosis, and models
+remain marked as not eligible for deployment until external animal- and site-level validation is
+completed.
+
+### What is finished, and what is not?
+
+| Part | Current status |
+|---|---|
+| Android movement recorder and export | Built, automatically tested, and installed/visually checked on an Android emulator. |
+| Current 25-column session contract | Built and validated, including timestamps, identities, labels, quality flags, and recovery rules. |
+| Crash and corrupt-data protection | Built and tested; unsafe sessions are repaired conservatively, quarantined, or refused for export. |
+| XIAO wearable path | Shared contract, BLE v2 protocol, Android adapter, and firmware are implemented; firmware compiles. |
+| Analysis and model tooling | Built and tested with synthetic fixtures, strict provenance checks, grouped evaluation, and reproducibility records. |
+| Experiment, annotation, welfare, and hardware guidance | Documented in the project wiki and backed by a structured evidence/reference index. |
+| Real goat/sheep behavior model | **Not yet available**; real multi-animal, video-labelled data must be collected first. |
+| Physical XIAO proof and production collar | **Not yet completed**; board flashing, BLE/radio, power, enclosure, mounting, calibration, and animal safety need physical testing. |
+| Production or veterinary use | **Not approved**; prospective field validation and human/veterinary operating gates are still required. |
+
+An older pre-publication build recorded and shared a session from a physical Infinix phone, but it
+used the former 24-column draft. The exact current release was verified on an emulator because that
+phone was unavailable. This boundary is intentional and is recorded in the
+[release verification report](wiki/verification/release-verification.md).
+
 ## What works now
 
 - Android recorder using the phone's accelerometer and gyroscope.
@@ -19,8 +97,8 @@ species- and farm-specific evidence needed before any production alert is truste
 - Separate simultaneous live label heads for feeding/rumination, posture/activity, and welfare observation.
 - Event-time label assignment, monotonic timestamps, durable CSV/JSON storage, valid-prefix crash
   recovery with corrupt-original quarantine, and integrity-gated ZIP export.
-- XIAO nRF52840 Sense firmware and Android BLE adapter with a verified capability/status handshake
-  sharing the same data contract.
+- XIAO nRF52840 Sense firmware and Android BLE adapter with a capability/status handshake tested
+  in software and sharing the same data contract.
 - Leakage-resistant Python baselines with domain guards, grouped uncertainty/calibration metrics,
   reproducibility manifests, and an evidence-linked experiment wiki.
 
