@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/vgoats/goat-sensor-lab/blob/main/schema/evidence-ledger-v1.schema.json",
+  "title": "Goat Sensor Lab evidence ledger v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["$schema", "ledger_schema_version", "last_searched_on", "search_protocol", "scope", "limitations", "records"],
+  "properties": {
+    "$schema": {"type": "string", "minLength": 1},
+    "ledger_schema_version": {"const": 1},
+    "last_searched_on": {"type": "string", "format": "date"},
+    "search_protocol": {"type": "string", "minLength": 1},
+    "scope": {"type": "string", "minLength": 1},
+    "limitations": {"type": "array", "items": {"type": "string"}},
+    "records": {"type": "array", "items": {"$ref": "#/$defs/record"}}
+  },
+  "$defs": {
+    "record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "title", "authors", "year", "source_type", "doi", "url", "accessed_on", "license", "directness", "species", "setting", "sensor_mount", "sample_size", "labels_or_endpoints", "validation_split", "result_summary", "limitations", "use_in_project", "status", "verified_source"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]+$"},
+        "title": {"type": "string", "minLength": 1},
+        "authors": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+        "year": {"type": "integer", "minimum": 1900},
+        "source_type": {"enum": ["PRIMARY_STUDY", "DATA_PAPER", "DATASET", "REVIEW", "METHODS", "GUIDELINE", "OFFICIAL_HARDWARE", "SOFTWARE"]},
+        "doi": {"type": ["string", "null"]},
+        "url": {"type": "string", "format": "uri"},
+        "accessed_on": {"type": "string", "format": "date"},
+        "license": {"type": "string", "minLength": 1},
+        "directness": {"enum": ["DIRECT_INDOOR_GOAT", "DIRECT_INDOOR_SHEEP", "DIRECT_MIXED_SMALL_RUMINANT", "TRANSFER_PASTURE_GOAT", "TRANSFER_OTHER_ENDPOINT", "SYNTHESIS", "METHODS_ONLY", "GUIDANCE_ONLY", "OFFICIAL_SPECIFICATION"]},
+        "species": {"type": "array", "items": {"enum": ["GOAT", "SHEEP", "MULTI_SPECIES", "NOT_APPLICABLE"]}},
+        "setting": {"type": "string", "minLength": 1},
+        "sensor_mount": {"type": "string", "minLength": 1},
+        "sample_size": {"type": "string", "minLength": 1},
+        "labels_or_endpoints": {"type": "array", "items": {"type": "string"}},
+        "validation_split": {"type": "string", "minLength": 1},
+        "result_summary": {"type": "string", "minLength": 1},
+        "limitations": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+        "use_in_project": {"type": "string", "minLength": 1},
+        "status": {"enum": ["INCLUDED_DIRECT", "INCLUDED_SYNTHESIS", "TRANSFER_ONLY", "METHOD_ONLY", "GUIDANCE_ONLY"]},
+        "verified_source": {"enum": ["PUBLISHER", "DOI_REGISTRY", "INSTITUTIONAL_REPOSITORY", "DATA_REPOSITORY", "OFFICIAL_PROJECT", "OFFICIAL_GUIDELINE"]}
+      }
+    }
+  }
+}

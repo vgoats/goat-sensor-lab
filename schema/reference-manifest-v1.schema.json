@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/vgoats/goat-sensor-lab/blob/main/schema/reference-manifest-v1.schema.json",
+  "title": "Goat Sensor Lab local reference repository manifest v1",
+  "description": "Portable metadata for local research checkouts. The checkouts themselves remain outside the product repository.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["$schema", "manifest_schema_version", "retrieval_root_description", "verified_on", "repositories"],
+  "properties": {
+    "$schema": {"type": "string", "minLength": 1},
+    "manifest_schema_version": {"const": 1},
+    "retrieval_root_description": {"type": "string", "minLength": 1},
+    "verified_on": {"type": "string", "format": "date"},
+    "repositories": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/repository"}
+    }
+  },
+  "$defs": {
+    "repository": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "upstream_url", "local_directory", "commit_sha", "release_tag", "retrieved_on", "verified_on", "checkout_status", "license_spdx", "license_status", "evidence_role", "purpose", "reuse_boundary", "notes"],
+      "properties": {
+        "name": {"type": "string", "minLength": 1},
+        "upstream_url": {"type": "string", "format": "uri"},
+        "local_directory": {"type": "string", "pattern": "^[^/]+$"},
+        "commit_sha": {"type": "string", "pattern": "^[a-f0-9]{40}$"},
+        "release_tag": {"type": ["string", "null"]},
+        "retrieved_on": {"type": "string", "format": "date"},
+        "verified_on": {"type": "string", "format": "date"},
+        "checkout_status": {"enum": ["CLEAN", "INCOMPLETE", "DIRTY", "NOT_PRESENT"]},
+        "license_spdx": {"type": ["string", "null"]},
+        "license_status": {"enum": ["VERIFIED_ROOT_LICENSE", "UNRESOLVED_NO_ROOT_LICENSE", "REQUIRES_FILE_LEVEL_REVIEW"]},
+        "evidence_role": {"enum": ["DIRECT_RESEARCH_METHOD", "ENGINEERING_TRANSFER", "PASTURE_TRANSFER", "ANNOTATION_METHOD", "OFFICIAL_HARDWARE"]},
+        "purpose": {"type": "string", "minLength": 1},
+        "reuse_boundary": {"type": "string", "minLength": 1},
+        "notes": {"type": "array", "items": {"type": "string"}}
+      }
+    }
+  }
+}

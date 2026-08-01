@@ -1,0 +1,5 @@
+<resources>
+    <color name="sensor_green">#176B45</color>
+    <color name="sensor_orange">#C75B12</color>
+    <color name="sensor_charcoal">#1B1C1D</color>
+</resources>

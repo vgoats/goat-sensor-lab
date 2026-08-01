@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/vgoats/goat-sensor-lab/blob/main/schema/annotation-consensus-v1.schema.json",
+  "title": "Goat Sensor Lab annotation consensus materialization v1",
+  "description": "A reproducible derived consensus artifact. It never replaces the immutable independent annotation table.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "consensus_schema_version",
+    "materialization_id",
+    "frozen",
+    "experiment_id",
+    "generated_at",
+    "input_annotations_sha256",
+    "input_annotation_schema_version",
+    "ethogram_id",
+    "ethogram_version",
+    "consensus_method",
+    "consensus_method_version",
+    "code_revision",
+    "segments"
+  ],
+  "properties": {
+    "consensus_schema_version": {"const": 1},
+    "materialization_id": {"type": "string", "minLength": 1},
+    "frozen": {"const": true},
+    "experiment_id": {"type": "string", "minLength": 1},
+    "generated_at": {"type": "string", "format": "date-time"},
+    "input_annotations_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "input_annotation_schema_version": {"const": 1},
+    "ethogram_id": {"type": "string", "minLength": 1},
+    "ethogram_version": {"type": "string", "minLength": 1},
+    "consensus_method": {"enum": ["UNANIMOUS", "MAJORITY", "ADJUDICATED", "PROTOCOL_RULE", "MIXED"]},
+    "consensus_method_version": {"type": "string", "minLength": 1},
+    "code_revision": {"type": "string", "minLength": 1, "description": "Git commit, immutable script digest, or NO_CODE for a documented manual adjudication."},
+    "segments": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/segment"}
+    }
+  },
+  "$defs": {
+    "segment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "consensus_id",
+        "session_id",
+        "animal_id",
+        "head",
+        "label",
+        "onset_monotonic_ns",
+        "offset_monotonic_ns",
+        "source_annotation_ids",
+        "resolution",
+        "adjudication_id",
+        "confidence",
+        "visibility",
+        "invalid_data"
+      ],
+      "properties": {
+        "consensus_id": {"type": "string", "minLength": 1},
+        "session_id": {"type": "string", "minLength": 1},
+        "animal_id": {"type": "string", "minLength": 1},
+        "head": {"enum": ["INGESTIVE_BEHAVIOR", "POSTURE_ACTIVITY", "WELFARE_OBSERVATION", "DATA_VALIDITY", "EVENT"]},
+        "label": {"type": "string", "minLength": 1},
+        "onset_monotonic_ns": {"type": "integer", "minimum": 0},
+        "offset_monotonic_ns": {"type": ["integer", "null"], "minimum": 0},
+        "source_annotation_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "resolution": {"enum": ["UNANIMOUS", "MAJORITY", "ADJUDICATED", "PROTOCOL_RULE", "NO_CONSENSUS"]},
+        "adjudication_id": {"type": ["string", "null"]},
+        "confidence": {"enum": ["HIGH", "MEDIUM", "LOW", "UNKNOWN"]},
+        "visibility": {"enum": ["CLEAR", "PARTIAL", "OCCLUDED", "NOT_APPLICABLE"]},
+        "invalid_data": {"type": "boolean"}
+      }
+    }
+  },
+  "x-invariants": [
+    "Every source_annotation_id resolves to the input annotations snapshot.",
+    "NO_CONSENSUS segments are excluded from primary training unless a registered protocol says otherwise.",
+    "Changing source rows, ethogram, resolution rules, or code creates a new materialization_id and digest; prior artifacts remain immutable."
+  ]
+}

@@ -1,0 +1,258 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/vgoats/goat-sensor-lab/blob/main/schema/samples-v1.schema.json",
+  "title": "Goat Sensor Lab samples.csv contract",
+  "description": "Canonical version-1 CSV contract for raw sensor samples and synchronized live-observer label state.",
+  "schema_version": 1,
+  "format": "csv",
+  "columns": [
+    {
+      "name": "schema_version",
+      "position": 1,
+      "type": "integer",
+      "required": true,
+      "nullable": false,
+      "unit": null,
+      "description": "Contract version.",
+      "constraints": {"const": 1}
+    },
+    {
+      "name": "session_id",
+      "position": 2,
+      "type": "string",
+      "required": true,
+      "nullable": false,
+      "unit": null,
+      "description": "Immutable recording-session identifier."
+    },
+    {
+      "name": "animal_id",
+      "position": 3,
+      "type": "string",
+      "required": true,
+      "nullable": false,
+      "unit": null,
+      "description": "Pseudonymous study identity; keep the farm RFID mapping outside exported research data."
+    },
+    {
+      "name": "species",
+      "position": 4,
+      "type": "string",
+      "required": true,
+      "nullable": false,
+      "unit": null,
+      "description": "Small-ruminant species.",
+      "enum": ["GOAT", "SHEEP"]
+    },
+    {
+      "name": "placement",
+      "position": 5,
+      "type": "string",
+      "required": true,
+      "nullable": false,
+      "unit": null,
+      "description": "Sensor placement or phone test placement.",
+      "enum": ["PHONE_HANDHELD_TEST", "NECK_COLLAR", "EAR_MOUNT", "BODY_HARNESS"]
+    },
+    {
+      "name": "source",
+      "position": 6,
+      "type": "string",
+      "required": true,
+      "nullable": false,
+      "unit": null,
+      "description": "Sensor source adapter.",
+      "enum": ["ANDROID_PHONE", "XIAO_NRF52840_SENSE"]
+    },
+    {
+      "name": "device_id",
+      "position": 7,
+      "type": "string",
+      "required": true,
+      "nullable": false,
+      "unit": null,
+      "description": "Phone sensor identity or board/BLE identity."
+    },
+    {
+      "name": "sequence",
+      "position": 8,
+      "type": "integer",
+      "required": true,
+      "nullable": false,
+      "unit": "count",
+      "description": "Monotonic per-source sequence used to detect loss or reordering.",
+      "constraints": {"minimum": 0}
+    },
+    {
+      "name": "wall_time_epoch_ms",
+      "position": 9,
+      "type": "integer",
+      "required": true,
+      "nullable": false,
+      "unit": "ms",
+      "description": "Human-readable Unix epoch time; may jump if the system clock changes.",
+      "constraints": {"exclusiveMinimum": 0}
+    },
+    {
+      "name": "monotonic_time_ns",
+      "position": 10,
+      "type": "integer",
+      "required": true,
+      "nullable": false,
+      "unit": "ns",
+      "description": "Primary acceleration sample clock for synchronization and intervals.",
+      "constraints": {"exclusiveMinimum": 0}
+    },
+    {
+      "name": "source_uptime_ms",
+      "position": 11,
+      "type": "integer",
+      "required": true,
+      "nullable": true,
+      "unit": "ms",
+      "description": "Source-native uptime retained for clock-anchor, loss, and replay audits; blank when the source has no separate clock.",
+      "constraints": {"minimum": 0}
+    },
+    {
+      "name": "gyro_monotonic_time_ns",
+      "position": 12,
+      "type": "integer",
+      "required": true,
+      "nullable": true,
+      "unit": "ns",
+      "description": "Gyroscope sample time when independently available."
+    },
+    {
+      "name": "acc_x_m_s2",
+      "position": 13,
+      "type": "number",
+      "required": true,
+      "nullable": false,
+      "unit": "m/s^2",
+      "description": "Raw sensor acceleration converted to SI units, including gravity; no project calibration is implied."
+    },
+    {
+      "name": "acc_y_m_s2",
+      "position": 14,
+      "type": "number",
+      "required": true,
+      "nullable": false,
+      "unit": "m/s^2",
+      "description": "Raw sensor acceleration converted to SI units, including gravity; no project calibration is implied."
+    },
+    {
+      "name": "acc_z_m_s2",
+      "position": 15,
+      "type": "number",
+      "required": true,
+      "nullable": false,
+      "unit": "m/s^2",
+      "description": "Raw sensor acceleration converted to SI units, including gravity; no project calibration is implied."
+    },
+    {
+      "name": "gyro_x_rad_s",
+      "position": 16,
+      "type": "number",
+      "required": true,
+      "nullable": true,
+      "unit": "rad/s",
+      "description": "Raw angular velocity."
+    },
+    {
+      "name": "gyro_y_rad_s",
+      "position": 17,
+      "type": "number",
+      "required": true,
+      "nullable": true,
+      "unit": "rad/s",
+      "description": "Raw angular velocity."
+    },
+    {
+      "name": "gyro_z_rad_s",
+      "position": 18,
+      "type": "number",
+      "required": true,
+      "nullable": true,
+      "unit": "rad/s",
+      "description": "Raw angular velocity."
+    },
+    {
+      "name": "temperature_c",
+      "position": 19,
+      "type": "number",
+      "required": true,
+      "nullable": true,
+      "unit": "degC",
+      "description": "Device/IMU/contact proxy only; not automatically core body temperature.",
+      "constraints": {"minimum": -100, "maximum": 150}
+    },
+    {
+      "name": "battery_percent",
+      "position": 20,
+      "type": "integer",
+      "required": true,
+      "nullable": true,
+      "unit": "%",
+      "description": "Source-reported battery estimate.",
+      "constraints": {"minimum": 0, "maximum": 100}
+    },
+    {
+      "name": "rssi_dbm",
+      "position": 21,
+      "type": "integer",
+      "required": true,
+      "nullable": true,
+      "unit": "dBm",
+      "description": "BLE received signal strength at the receiver.",
+      "constraints": {"minimum": -127, "maximum": 20}
+    },
+    {
+      "name": "ingestive_behavior",
+      "position": 22,
+      "type": "string",
+      "required": true,
+      "nullable": false,
+      "unit": null,
+      "description": "Current live-observer ingestive state copied onto the sample; not adjudicated research ground truth.",
+      "enum": ["UNKNOWN", "FEEDING", "RUMINATION", "NEITHER"]
+    },
+    {
+      "name": "posture_activity",
+      "position": 23,
+      "type": "string",
+      "required": true,
+      "nullable": false,
+      "unit": null,
+      "description": "Current live-observer posture/activity state copied onto the sample; not adjudicated research ground truth.",
+      "enum": ["UNKNOWN", "LYING", "STANDING", "ACTIVE_MOVEMENT"]
+    },
+    {
+      "name": "welfare_state",
+      "position": 24,
+      "type": "string",
+      "required": true,
+      "nullable": false,
+      "unit": null,
+      "description": "Current live-observer welfare state; clinical provenance and research consensus are external to this sample row.",
+      "enum": ["UNKNOWN", "NORMAL", "SUSPECTED_ABNORMAL_INACTIVITY"]
+    },
+    {
+      "name": "invalid_data",
+      "position": 25,
+      "type": "boolean",
+      "required": true,
+      "nullable": false,
+      "unit": null,
+      "description": "Whether the sensor, mount, visibility, or synchronization was unreliable.",
+      "csv_literals": ["true", "false"]
+    }
+  ],
+  "row_rules": [
+    "All 25 columns are required and must appear in the listed order.",
+    "Blank values are permitted only where nullable is true.",
+    "Within a session, monotonic_time_ns and sequence must be strictly increasing.",
+    "A gyroscope vector is either complete with gyro_monotonic_time_ns or entirely blank.",
+    "UNKNOWN behavior is not the same as invalid_data=true.",
+    "Use monotonic_time_ns for timing; wall_time_epoch_ms is display/context time only."
+  ]
+}
