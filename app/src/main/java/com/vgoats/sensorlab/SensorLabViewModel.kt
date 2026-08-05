@@ -237,6 +237,21 @@ class SensorLabViewModel(application: Application) : AndroidViewModel(applicatio
         }
     }
 
+    fun exportLastSessionToDownloads(context: Context) {
+        val directory = lastSessionDirectory
+        if (directory == null) {
+            _uiState.update { it.copy(message = "Record a session before exporting") }
+            return
+        }
+        runCatching { SessionExporter.saveToDownloads(context, directory) }
+            .onSuccess { path -> _uiState.update { it.copy(message = "Exported $path") } }
+            .onFailure { error ->
+                _uiState.update {
+                    it.copy(message = error.message ?: "Unable to export session")
+                }
+            }
+    }
+
     fun clearMessage() = _uiState.update { it.copy(message = null) }
 
     private fun onSensorFrame(frame: SensorFrame) {

@@ -87,7 +87,7 @@ fun SensorLabApp(viewModel: SensorLabViewModel) {
                 SensorLabScreen(
                     state = state,
                     viewModel = viewModel,
-                    onShare = { viewModel.shareLastSession(context) },
+                    onShare = { viewModel.exportLastSessionToDownloads(context) },
                     onSourceSelected = ::selectSource,
                     modifier = Modifier.padding(padding),
                 )

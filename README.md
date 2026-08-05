@@ -145,7 +145,9 @@ adb -s <PHONE_SERIAL> install -r app/build/outputs/apk/debug/app-debug.apk
    the app. The recorder connects only to that exact board.
 3. Enter the animal ID, species, placement, rate, annotator, shed/pen, camera IDs, and notes.
 4. Start recording, change each label head only when the observed behavior changes, then stop.
-5. Export the ZIP from the app.
+5. Export the ZIP from the app. The debug app writes exports to
+   `Download/GoatSensorLab/<session_id>.zip` so profile-private Android storage does not block ADB
+   or Files access.
 
 The first Android version deliberately keeps the screen awake and records only while the app is
 open. Leaving the foreground finalizes the session. On the next launch, interrupted CSVs are
