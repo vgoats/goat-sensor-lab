@@ -5,6 +5,8 @@ internal object GoatSensorIdentity {
         .trim()
         .uppercase()
         .removePrefix("GOATSENSOR-")
+        .filter { it in '0'..'9' || it in 'A'..'F' }
+        .take(16)
 
     fun advertisedName(targetId: String): String = "GoatSensor-${normalize(targetId)}"
 

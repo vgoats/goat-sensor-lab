@@ -28,6 +28,9 @@ internal data class XiaoCapabilities(
         require(accelerometerRangeG == 4) {
             "Unsupported XIAO accelerometer range ${accelerometerRangeG}g"
         }
+        require(imu == "LSM6DS3TR-C") {
+            "XIAO IMU is unavailable"
+        }
         require(gyroscopeRangeDps == 500) {
             "Unsupported XIAO gyroscope range ${gyroscopeRangeDps} dps"
         }

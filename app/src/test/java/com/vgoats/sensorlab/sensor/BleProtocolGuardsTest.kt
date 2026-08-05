@@ -23,6 +23,20 @@ class BleProtocolGuardsTest {
     }
 
     @Test
+    fun boardIdentityAcceptsPastedNameAndIgnoresTrailingText() {
+        assertEquals(
+            "911806CBE88F40D2",
+            GoatSensorIdentity.normalize("GoatSensor-911806CBE88F40D2 BY"),
+        )
+        assertTrue(
+            GoatSensorIdentity.matches(
+                "911806CBE88F40D2 BY",
+                "GoatSensor-911806CBE88F40D2",
+            ),
+        )
+    }
+
+    @Test
     fun sequenceTrackerCountsLossAndHandlesUint32Wrap() {
         val tracker = UnsignedSequenceTracker()
         assertTrue(tracker.observe(0xfffffffeL).accepted)

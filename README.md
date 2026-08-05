@@ -77,11 +77,11 @@ completed.
 | Android movement recorder and export | Built, automatically tested, and installed/visually checked on an Android emulator. |
 | Current 25-column session contract | Built and validated, including timestamps, identities, labels, quality flags, and recovery rules. |
 | Crash and corrupt-data protection | Built and tested; unsafe sessions are repaired conservatively, quarantined, or refused for export. |
-| XIAO wearable path | Shared contract, BLE v2 protocol, Android adapter, and firmware are implemented; firmware compiles. |
+| XIAO wearable path | Shared contract, BLE v2 protocol, Android adapter, and firmware are implemented; physical XIAO Sense board flashing, IMU detection, BLE capabilities, BLE streaming, and Android recording were verified on 2026-08-05. |
 | Analysis and model tooling | Built and tested with synthetic fixtures, strict provenance checks, grouped evaluation, and reproducibility records. |
 | Experiment, annotation, welfare, and hardware guidance | Documented in the project wiki and backed by a structured evidence/reference index. |
 | Real goat/sheep behavior model | **Not yet available**; real multi-animal, video-labelled data must be collected first. |
-| Physical XIAO proof and production collar | **Not yet completed**; board flashing, BLE/radio, power, enclosure, mounting, calibration, and animal safety need physical testing. |
+| Production collar | **Not yet completed**; battery, enclosure, mounting, calibration, wearability, and animal safety still need physical testing. |
 | Production or veterinary use | **Not approved**; prospective field validation and human/veterinary operating gates are still required. |
 
 An older pre-publication build recorded and shared a session from a physical Infinix phone, but it
@@ -96,8 +96,10 @@ phone was unavailable. This boundary is intentional and is recorded in the
 - Separate simultaneous live label heads for feeding/rumination, posture/activity, and welfare observation.
 - Event-time label assignment, monotonic timestamps, durable CSV/JSON storage, valid-prefix crash
   recovery with corrupt-original quarantine, and integrity-gated ZIP export.
-- XIAO nRF52840 Sense firmware and Android BLE adapter with a capability/status handshake tested
-  in software and sharing the same data contract.
+- XIAO nRF52840 Sense firmware and Android BLE adapter with a capability/status handshake sharing
+  the same data contract. On 2026-08-05, a physical board was flashed, its onboard IMU was read,
+  BLE capabilities reported `LSM6DS3TR-C`, BLE packets streamed, and the Infinix app saved a
+  147-sample XIAO session at 26 Hz.
 - Leakage-resistant Python baselines with domain guards, grouped uncertainty/calibration metrics,
   reproducibility manifests, and an evidence-linked experiment wiki.
 
@@ -108,9 +110,9 @@ generate those governance artifacts automatically.
 
 An earlier pre-publication Android build was exercised on an Infinix phone at a measured **25.9
 Hz**, and its ZIP share flow was verified. That capture used the former 24-column draft schema.
-The current 25-column release build and UI have been installed and visually checked on an Android
-emulator because the phone was unavailable for the release pass. XIAO firmware compiles, but the
-current release has not been flashed or radio-tested on an actual board.
+The current 25-column release build and UI were installed and visually checked on an Android
+emulator for the original release pass. On 2026-08-05, the XIAO path was physically verified with
+the current app and firmware on an Infinix phone and Seeed Studio XIAO nRF52840 Sense board.
 
 ## System
 
@@ -161,9 +163,11 @@ pio run
 pio run --target upload
 ```
 
-No soldering is required for the USB-C desk test. A battery-powered wearable later needs battery
-leads soldered to the board pads or a compatible expansion adapter. The onboard IMU needs no
-soldering. See [the hardware guide](wiki/hardware/xiao-nrf52840-sense.md) and
+No soldering is required for the USB-C desk test or onboard IMU. The firmware environment must use
+the Sense PlatformIO target `seeed-xiao-afruitnrf52-nrf52840-sense`; the plain
+`seeed-xiao-afruitnrf52-nrf52840` target can build and flash but leaves the Sense IMU unavailable.
+A battery-powered wearable later needs battery leads soldered to the board pads or a compatible
+expansion adapter. See [the hardware guide](wiki/hardware/xiao-nrf52840-sense.md) and
 [BLE protocol](protocol/ble-v2.md).
 
 ## Analysis quick start

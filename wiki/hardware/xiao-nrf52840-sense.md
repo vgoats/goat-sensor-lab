@@ -36,10 +36,36 @@ The phone and XIAO both expose 3-axis acceleration and 3-axis gyroscope data, so
 
 1. Verify the received board is the Sense variant.
 2. Connect USB-C; no soldering is required for USB firmware and serial IMU tests.
-3. Flash a simple official IMU example and verify all six axes.
-4. Flash the repository BLE firmware and verify capabilities, control, stream, status, and time-anchor characteristics.
-5. Compare sequence continuity, achieved rate, axes at rest, rotations, and known taps against the phone recorder.
-6. Add a battery only after USB behavior is stable. A permanent battery connection normally requires soldering or a purpose-built carrier/connector.
-7. Do not place the development board directly on an animal; first build a rounded, sealed, strain-relieved, breakaway prototype.
+3. Confirm the firmware build uses the PlatformIO board target
+   `seeed-xiao-afruitnrf52-nrf52840-sense`. Do not use the plain
+   `seeed-xiao-afruitnrf52-nrf52840` target for Sense firmware.
+4. Flash a simple official IMU example and verify all six axes.
+5. Flash the repository BLE firmware and verify capabilities, control, stream, status, and time-anchor characteristics.
+6. Compare sequence continuity, achieved rate, axes at rest, rotations, and known taps against the phone recorder.
+7. Add a battery only after USB behavior is stable. A permanent battery connection normally requires soldering or a purpose-built carrier/connector.
+8. Do not place the development board directly on an animal; first build a rounded, sealed, strain-relieved, breakaway prototype.
+
+## 2026-08-05 desk proof
+
+A physical Seeed Studio XIAO nRF52840 Sense board, SKU `102010469`, was tested over USB-C and BLE.
+The visible board silkscreen read `XIAO nRF52840`, while the package label identified the Sense
+SKU. This is expected enough that verification should rely on the order/package identity and IMU
+proof, not top-side silkscreen alone.
+
+Observed results:
+
+- PlatformIO Sense board target:
+  `seeed-xiao-afruitnrf52-nrf52840-sense`.
+- USB serial IMU proof showed stable acceleration near gravity and non-zero gyroscope readings.
+- BLE advertised as `GoatSensor-911806CBE88F40D2`.
+- BLE capabilities included `"imu":"LSM6DS3TR-C"`, `"rates_hz":[13,26]`,
+  `"accel_g":4`, `"gyro_dps":500`, and `"packet_bytes":20`.
+- A direct BLE stream check received 48 packets in 3 seconds.
+- The Infinix X6873 Android app recorded a 26 Hz XIAO session and saved 147 samples.
+
+Failure mode found during bring-up: using the plain non-Sense PlatformIO board target allowed the
+firmware to compile and upload, but the IMU initialization failed and the board reported
+`"imu":"unavailable"`. The fix is the Sense board target; no soldering is required for the onboard
+IMU.
 
 Seeed documents TensorFlow Lite/TinyML examples for the board, but that means the board can run a trained model; it does not provide a goat/sheep model. See [Seeed's TinyML guide](https://wiki.seeedstudio.com/XIAO-BLE-Sense-TFLite-Getting-Started/) and [Edge Impulse's board documentation](https://docs.edgeimpulse.com/hardware/boards/seeed-xiao-nrf52840-sense).

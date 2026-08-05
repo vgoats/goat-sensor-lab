@@ -38,6 +38,14 @@ class XiaoProtocolMetadataTest {
             XiaoCapabilities.parse(validCapabilities.toByteArray())
                 .validate(26, "GoatSensor-FFFFFFFFFFFFFFFF")
         }
+        assertThrows(IllegalArgumentException::class.java) {
+            XiaoCapabilities.parse(
+                validCapabilities
+                    .replace("\"imu\":\"LSM6DS3TR-C\"", "\"imu\":\"unavailable\"")
+                    .toByteArray(),
+            )
+                .validate(26, "GoatSensor-AABBCCDD00112233")
+        }
     }
 
     @Test

@@ -54,11 +54,30 @@ APK was verified on the emulator as described above.
 - Firmware built with PlatformIO 6.1.19, the pinned Seeed platform commit, and LSM6DS3 library
   2.0.7: 14,776 bytes RAM (6.2%) and 125,556 bytes flash (15.5%).
 
+## 2026-08-05 physical XIAO Sense verification
+
+The XIAO wearable path was physically tested after the original release boundary. This test used a
+Seeed Studio XIAO nRF52840 Sense board and an Infinix X6873 physical Android phone.
+
+| Check | Observed result |
+|---|---|
+| Board identity | `GoatSensor-911806CBE88F40D2` |
+| Firmware target | `seeed-xiao-afruitnrf52-nrf52840-sense` |
+| IMU proof | USB serial probe read live acceleration and gyroscope values from the onboard LSM6DS3TR-C |
+| BLE capabilities | `protocol: 2`, `imu: LSM6DS3TR-C`, `rates_hz: [13,26]`, `packet_bytes: 20` |
+| Direct BLE stream | 48 packets received in 3 seconds during a Mac-side stream check |
+| Android device | Infinix X6873, Android SDK 36, app running under user/profile 10 |
+| Android XIAO session | 26 Hz capture saved by the app with 147 samples |
+
+The bring-up failure was a configuration mismatch: the firmware had been using the plain
+`seeed-xiao-afruitnrf52-nrf52840` PlatformIO target. That target can build and upload, but it
+selects the wrong Arduino variant for this Sense use case and made the onboard IMU appear
+unavailable. The firmware now uses `seeed-xiao-afruitnrf52-nrf52840-sense`.
+
 ## Not yet physically verified
 
-- the current 25-column APK on a physical Android phone;
-- XIAO flashing, onboard IMU values, BLE GATT/radio behavior, packet loss, clock uncertainty, and
-  battery operation on an actual board;
+- export pulling from the Android work/profile-10 private app storage through ADB;
+- battery operation on an actual board;
 - mount/enclosure safety, calibration, wearability, or any goat/sheep trial; and
 - animal-held-out, external-farm, prospective welfare, reproductive, or clinical performance.
 
