@@ -1,5 +1,9 @@
 # Goat Sensor Lab Agent Guide
 
+## No GitHub Actions
+
+Never create, enable, trigger, or rely on GitHub Actions for this repository. Run verification locally. Ravi does not use or pay for GitHub Actions.
+
 ## Product boundary
 
 This repository owns wearable-sensor experimentation for indoor, stall-fed goats and sheep.
